@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Your Name — Design & Development</title>
+
+  <meta
+    name="description"
+    content="Designing visual experiences and building websites, applications and custom digital solutions."
+  />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0b0b0c;
+      --surface: #121214;
+      --surface-light: #19191c;
+      --text: #f5f5f5;
+      --muted: #99999f;
+      --border: rgba(255,255,255,0.1);
+      --accent: #c7ff4a;
+      --max-width: 1200px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 40px));
+      margin: auto;
+    }
+
+    /* ---------------- NAVBAR ---------------- */
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(11, 11, 12, 0.8);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: white;
+    }
+
+    .nav-cta {
+      padding: 11px 18px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #111 !important;
+      font-weight: 700;
+    }
+
+    /* ---------------- HERO ---------------- */
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: var(--accent);
+      opacity: 0.06;
+      filter: blur(120px);
+      border-radius: 50%;
+      top: 15%;
+      right: 10%;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 30px;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    h1 {
+      font-size: clamp(55px, 8vw, 110px);
+      line-height: 0.95;
+      letter-spacing: -6px;
+      max-width: 1000px;
+    }
+
+    h1 span {
+      color: var(--accent);
+    }
+
+    .hero-description {
+      max-width: 600px;
+      color: var(--muted);
+      font-size: 19px;
+      margin-top: 35px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      margin-top: 35px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: transform 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: var(--accent);
+      color: #111;
+    }
+
+    .button-secondary {
+      border: 1px solid var(--border);
+      color: white;
+    }
+
+    /* ---------------- SECTIONS ---------------- */
+
+    section {
+      padding: 120px 0;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+      margin-bottom: 55px;
+    }
+
+    .section-number {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .section-title {
+      font-size: clamp(38px, 5vw, 65px);
+      line-height: 1;
+      letter-spacing: -3px;
+      max-width: 700px;
+    }
+
+    .section-description {
+      color: var(--muted);
+      max-width: 400px;
+    }
+
+    /* ---------------- SERVICES ---------------- */
+
+    .services {
+      border-top: 1px solid var(--border);
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+    }
+
+    .service {
+      padding: 40px;
+      min-height: 330px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      transition: 0.3s;
+    }
+
+    .service:hover {
+      background: var(--surface);
+    }
+
+    .service-number {
+      color: var(--accent);
+      font-size: 13px;
+    }
+
+    .service h3 {
+      font-size: 28px;
+      margin: 70px 0 15px;
+      letter-spacing: -1px;
+    }
+
+    .service p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .service-list {
+      list-style: none;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .service-list li {
+      margin: 7px 0;
+    }
+
+    /* ---------------- WORK ---------------- */
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .project {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+
+    .project:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255,255,255,0.25);
+    }
+
+    .project-image {
+      height: 330px;
+      background:
+        linear-gradient(135deg, #1d1d21, #101012);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #777;
+    }
+
+    .project-content {
+      padding: 25px;
+    }
+
+    .project-category {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .project h3 {
+      font-size: 25px;
+      margin-top: 8px;
+    }
+
+    .project p {
+      color: var(--muted);
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    /* ---------------- PROCESS ---------------- */
+
+    .process {
+      background: var(--surface);
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+    }
+
+    .process-step {
+      padding: 30px;
+      min-height: 190px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .process-step span {
+      color: var(--accent);
+      font-size: 13px;
+    }
+
+    .process-step h3 {
+      margin-top: 45px;
+      font-size: 20px;
+    }
+
+    .process-step p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    /* ---------------- ABOUT ---------------- */
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+
+    .about-text {
+      font-size: 23px;
+      line-height: 1.5;
+    }
+
+    .about-text span {
+      color: var(--muted);
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .skill {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 15px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ---------------- CONTACT ---------------- */
+
+    .contact {
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .contact h2 {
+      font-size: clamp(45px, 7vw, 90px);
+      letter-spacing: -5px;
+      line-height: 1;
+    }
+
+    .contact p {
+      color: var(--muted);
+      max-width: 500px;
+      margin: 25px auto;
+    }
+
+    /* ---------------- FOOTER ---------------- */
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 30px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* ---------------- MOBILE ---------------- */
+
+    @media (max-width: 800px) {
+
+      .nav-links {
+        display: none;
+      }
+
+      .container {
+        width: min(100% - 28px, var(--max-width));
+      }
+
+      h1 {
+        letter-spacing: -3px;
+      }
+
+      .hero-description {
+        font-size: 17px;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      section {
+        padding: 80px 0;
+      }
+
+      .section-header {
+        flex-direction: column;
+      }
+
+      .service-grid,
+      .work-grid,
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .service {
+        min-height: auto;
+      }
+
+      .service h3 {
+        margin-top: 40px;
+      }
+
+      .about-grid {
+        gap: 50px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+
+  <nav>
+    <div class="container nav-inner">
+
+      <a href="#" class="logo">
+        YOUR<span>.</span>NAME
+      </a>
+
+      <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact" class="nav-cta">Start a Project</a>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <!-- HERO -->
+
+  <main>
+
+    <section class="hero">
+
+      <div class="container">
+
+        <div class="hero-content">
+
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            Available for freelance projects
+          </div>
+
+          <h1>
+            Design.
+            <br />
+            Development.
+            <br />
+            <span>Digital Solutions.</span>
+          </h1>
+
+          <p class="hero-description">
+            I design visual experiences and build websites,
+            applications and custom digital solutions for
+            individuals, startups and businesses.
+          </p>
+
+          <div class="hero-buttons">
+
+            <a href="#work" class="button button-primary">
+              View My Work
+            </a>
+
+            <a href="#contact" class="button button-secondary">
+              Start a Project
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SERVICES -->
+
+    <section class="services" id="services">
+
+      <div class="container">
+
+        <div class="section-header">
+
+          <div>
+            <div class="section-number">01 / SERVICES</div>
+
+            <h2 class="section-title">
+              From idea to finished product.
+            </h2>
+          </div>
+
+          <p class="section-description">
+            Whether you need something designed, developed,
+            or both — I can take your idea from concept
+            to a finished digital product.
+          </p>
+
+        </div>
+
+
+        <div class="service-grid">
+
+          <div class="service">
+
+            <div class="service-number">01</div>
+
+            <h3>Design</h3>
+
+            <p>
+              Creative and visual design for digital
+              and physical experiences.
+            </p>
+
+            <ul class="service-list">
+              <li>→ Presentations</li>
+              <li>→ Portfolios</li>
+              <li>→ Social media designs</li>
+              <li>→ Marketing materials</li>
+              <li>→ Print & merchandise</li>
+              <li>→ Custom graphics</li>
+            </ul>
+
+          </div>
+
+
+          <div class="service">
+
+            <div class="service-number">02</div>
+
+            <h3>Development</h3>
+
+            <p>
+              Modern software and applications built
+              around your requirements.
+            </p>
+
+            <ul class="service-list">
+              <li>→ Websites</li>
+              <li>→ Web applications</li>
+              <li>→ Mobile applications</li>
+              <li>→ Desktop applications</li>
+              <li>→ APIs & backend systems</li>
+              <li>→ Database development</li>
+            </ul>
+
+          </div>
+
+
+          <div class="service">
+
+            <div class="service-number">03</div>
+
+            <h3>Digital Solutions</h3>
+
+            <p>
+              Complete custom systems designed to
+              solve real business problems.
+            </p>
+
+            <ul class="service-list">
+              <li>→ Business software</li>
+              <li>→ HRMS</li>
+              <li>→ Inventory systems</li>
+              <li>→ Management dashboards</li>
+              <li>→ Automation</li>
+              <li>→ Custom software</li>
+            </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- WORK -->
+
+    <section id="work">
+
+      <div class="container">
+
+        <div class="section-header">
+
+          <div>
+
+            <div class="section-number">
+              02 / SELECTED WORK
+            </div>
+
+            <h2 class="section-title">
+              Things I've designed & built.
+            </h2>
+
+          </div>
+
+          <p class="section-description">
+            A selection of creative work and technical
+            projects. More projects coming soon.
+          </p>
+
+        </div>
+
+
+        <div class="work-grid">
+
+          <article class="project">
+
+            <div class="project-image">
+              PROJECT IMAGE
+            </div>
+
+            <div class="project-content">
+
+              <div class="project-category">
+                Software
+              </div>
+
+              <h3>HR Management System</h3>
+
+              <p>
+                A complete business platform for managing
+                employees, attendance, leave and HR operations.
+              </p>
+
+            </div>
+
+          </article>
+
+
+          <article class="project">
+
+            <div class="project-image">
+              PROJECT IMAGE
+            </div>
+
+            <div class="project-content">
+
+              <div class="project-category">
+                Web Development
+              </div>
+
+              <h3>Business Website</h3>
+
+              <p>
+                A modern responsive website designed to
+                establish a professional digital presence.
+              </p>
+
+            </div>
+
+          </article>
+
+
+          <article class="project">
+
+            <div class="project-image">
+              DESIGN PREVIEW
+            </div>
+
+            <div class="project-content">
+
+              <div class="project-category">
+                Design
+              </div>
+
+              <h3>Presentation Design</h3>
+
+              <p>
+                A professional presentation system designed
+                for communicating ideas clearly.
+              </p>
+
+            </div>
+
+          </article>
+
+
+          <article class="project">
+
+            <div class="project-image">
+              APP PREVIEW
+            </div>
+
+            <div class="project-content">
+
+              <div class="project-category">
+                Application
+              </div>
+
+              <h3>Custom Application</h3>
+
+              <p>
+                A tailored application designed around
+                a specific business workflow.
+              </p>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PROCESS -->
+
+    <section class="process">
+
+      <div class="container">
+
+        <div class="section-header">
+
+          <div>
+
+            <div class="section-number">
+              03 / PROCESS
+            </div>
+
+            <h2 class="section-title">
+              Simple process. Serious work.
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div class="process-grid">
+
+          <div class="process-step">
+            <span>01</span>
+            <h3>Discover</h3>
+            <p>Understand your idea and requirements.</p>
+          </div>
+
+          <div class="process-step">
+            <span>02</span>
+            <h3>Plan</h3>
+            <p>Define the solution, scope and direction.</p>
+          </div>
+
+          <div class="process-step">
+            <span>03</span>
+            <h3>Design</h3>
+            <p>Create the visual and user experience.</p>
+          </div>
+
+          <div class="process-step">
+            <span>04</span>
+            <h3>Build</h3>
+            <p>Develop and test the final product.</p>
+          </div>
+
+          <div class="process-step">
+            <span>05</span>
+            <h3>Deliver</h3>
+            <p>Launch, hand over and support.</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+
+    <section id="about">
+
+      <div class="container">
+
+        <div class="about-grid">
+
+          <div>
+
+            <div class="section-number">
+              04 / ABOUT
+            </div>
+
+            <h2 class="section-title">
+              One person.
+              <br />
+              Multiple skill sets.
+            </h2>
+
+          </div>
+
+
+          <div>
+
+            <p class="about-text">
+
+              I'm a designer and developer who enjoys
+              turning ideas into things people can actually
+              use.
+
+              <br /><br />
+
+              <span>
+                From a simple creative design to a complete
+                business application, I work across both
+                design and technology to create practical,
+                polished solutions.
+              </span>
+
+            </p>
+
+
+            <div class="skills">
+
+              <span class="skill">Canva</span>
+              <span class="skill">UI Design</span>
+              <span class="skill">Web Development</span>
+              <span class="skill">Mobile Development</span>
+              <span class="skill">Desktop Development</span>
+              <span class="skill">Backend</span>
+              <span class="skill">Databases</span>
+              <span class="skill">Software Architecture</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- CONTACT -->
+
+    <section class="contact" id="contact">
+
+      <div class="container">
+
+        <div class="section-number">
+          05 / LET'S WORK TOGETHER
+        </div>
+
+        <h2>
+          Have an idea?
+          <br />
+          Let's build it.
+        </h2>
+
+        <p>
+          Tell me what you're working on, what you need,
+          or even just what you're thinking about.
+          We'll figure out the next step.
+        </p>
+
+        <a
+          href="mailto:your@email.com"
+          class="button button-primary"
+        >
+          Start a Conversation
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="container footer-inner">
+
+      <div>
+        © 2026 YOUR.NAME
+      </div>
+
+      <div>
+        Design · Development · Digital Solutions
+      </div>
+
+    </div>
+
+  </footer>
+
+
+</body>
+</html>
