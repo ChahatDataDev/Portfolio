@@ -1413,3 +1413,10 @@ body {
 .footer {
   background: #f8fafc;
 }
+
+.logo > img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  display: block;
+}
