@@ -125,17 +125,19 @@ img {
 }
 
 .logo-mark {
-  width: 42px;
-  height: 42px;
-  display: flex;
+  height: 40px;
+  padding: 0 14px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-sm);
   background: var(--gradient-primary);
   color: white;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
   box-shadow: var(--shadow);
+  clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
 }
 
 .logo-text {
@@ -227,10 +229,10 @@ img {
 
 .hero {
   position: relative;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
-  padding: 140px 0 80px;
+  padding: clamp(96px, 14vh, 150px) 0 clamp(48px, 8vh, 90px);
   overflow: hidden;
 }
 
@@ -1103,4 +1105,224 @@ img {
     opacity: 1;
     transform: none;
   }
+}
+
+/* =========================================================
+   Geometric Animation System
+   ========================================================= */
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 10000;
+  background: var(--purple);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 0 0 var(--radius-sm) 0;
+}
+.skip-link:focus { left: 0; }
+
+.geo-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.navbar, .hero, .section, .footer { position: relative; z-index: 1; }
+
+/* Animated isometric grid behind the hero */
+.geo-grid {
+  position: absolute;
+  inset: -20% -10%;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(168, 85, 247, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 184, 166, 0.09) 1px, transparent 1px);
+  background-size: 64px 64px;
+  transform: perspective(700px) rotateX(58deg);
+  mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 72%);
+  -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 72%);
+  animation: gridScroll 6s linear infinite;
+}
+
+@keyframes gridScroll {
+  to { background-position: 0 64px, 64px 0; }
+}
+
+/* Geometric shape stack in the hero visual */
+.geo-stack {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.geo-shape {
+  position: absolute;
+  display: block;
+  will-change: transform;
+}
+
+.geo-hex {
+  width: 190px;
+  height: 210px;
+  top: 8%;
+  left: 50%;
+  margin-left: -95px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.55), rgba(236, 72, 153, 0.35));
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  animation: spinY 4.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.geo-tri {
+  width: 120px;
+  height: 104px;
+  bottom: 14%;
+  right: 8%;
+  background: linear-gradient(135deg, var(--teal), var(--blue));
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  animation: snapRotate 3.2s steps(1, end) infinite;
+}
+
+.geo-square {
+  width: 90px;
+  height: 90px;
+  top: 26%;
+  left: 4%;
+  border: 2px solid var(--amber);
+  border-radius: 6px;
+  animation: dashSpin 2.8s cubic-bezier(0.85, 0, 0.15, 1) infinite;
+}
+
+.geo-ring {
+  width: 220px;
+  height: 220px;
+  bottom: 6%;
+  left: 12%;
+  border: 2px dashed rgba(248, 250, 252, 0.18);
+  border-radius: 50%;
+  animation: spinSlow 9s linear infinite;
+}
+
+.geo-diamond {
+  width: 64px;
+  height: 64px;
+  top: 60%;
+  right: 26%;
+  background: linear-gradient(135deg, var(--mint), var(--amber));
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  animation: pulseSnap 2.4s cubic-bezier(0.36, 0, 0.66, -0.56) infinite;
+}
+
+.geo-outline-tri {
+  position: absolute;
+  width: 110px;
+  height: 96px;
+  top: -28px;
+  right: -18px;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  opacity: 0.65;
+  animation: snapRotate 3.6s steps(1, end) infinite;
+}
+
+@keyframes spinY {
+  0%   { transform: rotateY(0deg) rotate(0deg) scale(1); }
+  45%  { transform: rotateY(180deg) rotate(20deg) scale(1.08); }
+  50%  { transform: rotateY(180deg) rotate(20deg) scale(1.08); }
+  95%  { transform: rotateY(360deg) rotate(0deg) scale(1); }
+  100% { transform: rotateY(360deg) rotate(0deg) scale(1); }
+}
+
+@keyframes snapRotate {
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(90deg); }
+  50%  { transform: rotate(180deg); }
+  75%  { transform: rotate(270deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes dashSpin {
+  0%   { transform: rotate(0deg) translateY(0); border-radius: 6px; }
+  50%  { transform: rotate(135deg) translateY(-18px); border-radius: 50%; }
+  100% { transform: rotate(270deg) translateY(0); border-radius: 6px; }
+}
+
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseSnap {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.9; }
+  50%      { transform: scale(1.45) rotate(45deg); opacity: 0.5; }
+}
+
+/* Corner accents on cards — sharp geometric hover */
+.service-card,
+.process-step {
+  overflow: hidden;
+}
+
+.service-card::after {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 90px;
+  height: 90px;
+  background: var(--gradient-primary);
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  opacity: 0;
+  transform: rotate(0deg) scale(0.6);
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s;
+}
+
+.service-card { position: relative; }
+
+.service-card:hover::after {
+  opacity: 0.35;
+  transform: rotate(180deg) scale(1);
+}
+
+/* =========================================================
+   Responsive fit refinements
+   ========================================================= */
+
+.section { padding: clamp(64px, 10vw, 120px) 0; }
+.container, .nav-container { width: min(92%, 1200px); }
+.section-title { text-wrap: balance; }
+
+@media (max-width: 1024px) {
+  .geo-hex { width: 150px; height: 168px; margin-left: -75px; }
+  .geo-ring { width: 170px; height: 170px; }
+}
+
+@media (max-width: 768px) {
+  .hero { min-height: auto; }
+  .hero-visual { height: 340px; }
+  .geo-canvas { opacity: 0.35; }
+  .geo-square { width: 66px; height: 66px; }
+  .geo-tri { width: 88px; height: 76px; }
+  .geo-diamond { width: 46px; height: 46px; }
+  .geo-ring { width: 140px; height: 140px; }
+  .logo-text { font-size: 0.95rem; }
+}
+
+@media (max-width: 480px) {
+  .hero-visual { height: 300px; }
+  .floating-card { padding: 12px 14px; font-size: 0.82rem; gap: 10px; }
+  .card-icon { width: 34px; height: 34px; }
+  .card-icon svg { width: 20px; height: 20px; }
+  .geo-hex { width: 118px; height: 132px; margin-left: -59px; }
+  .logo-mark { height: 34px; padding: 0 10px; font-size: 0.85rem; }
+  .hero-stats { flex-wrap: wrap; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .geo-canvas { display: none; }
 }

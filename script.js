@@ -35,8 +35,9 @@
   // Mobile menu toggle
   if (menuToggle && navLinks) {
     menuToggle.addEventListener('click', function () {
-      menuToggle.classList.toggle('active');
+      const open = menuToggle.classList.toggle('active');
       navLinks.classList.toggle('active');
+      menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
 
     // Close menu when clicking a link
@@ -44,6 +45,7 @@
       link.addEventListener('click', function () {
         menuToggle.classList.remove('active');
         navLinks.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
       });
     });
   }
@@ -200,4 +202,118 @@
       });
     });
   }
+})();
+
+/* =========================================================
+   Geometric particle network (canvas)
+   ========================================================= */
+(function () {
+  'use strict';
+
+  const canvas = document.getElementById('geo-canvas');
+  if (!canvas) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const ctx = canvas.getContext('2d');
+  const colors = ['#a855f7', '#ec4899', '#14b8a6', '#f59e0b', '#3b82f6'];
+  let w = 0, h = 0, dpr = 1, nodes = [], raf = null;
+
+  function nodeCount() {
+    return Math.min(60, Math.max(18, Math.round(window.innerWidth / 26)));
+  }
+
+  function build() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.clientWidth;
+    h = canvas.clientHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    nodes = [];
+    const total = nodeCount();
+    for (let i = 0; i < total; i++) {
+      nodes.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.55,
+        vy: (Math.random() - 0.5) * 0.55,
+        size: 3 + Math.random() * 5,
+        sides: 3 + Math.floor(Math.random() * 4),
+        angle: Math.random() * Math.PI * 2,
+        spin: (Math.random() - 0.5) * 0.05,
+        color: colors[i % colors.length]
+      });
+    }
+  }
+
+  function polygon(n) {
+    ctx.beginPath();
+    for (let i = 0; i < n.sides; i++) {
+      const a = n.angle + (i * 2 * Math.PI) / n.sides;
+      const px = n.x + Math.cos(a) * n.size;
+      const py = n.y + Math.sin(a) * n.size;
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+  }
+
+  function frame() {
+    ctx.clearRect(0, 0, w, h);
+
+    for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i];
+      a.x += a.vx;
+      a.y += a.vy;
+      a.angle += a.spin;
+      if (a.x < 0 || a.x > w) a.vx *= -1;
+      if (a.y < 0 || a.y > h) a.vy *= -1;
+
+      for (let j = i + 1; j < nodes.length; j++) {
+        const b = nodes[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 130) {
+          ctx.strokeStyle = a.color;
+          ctx.globalAlpha = (1 - dist / 130) * 0.22;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = a.color;
+      ctx.lineWidth = 1.4;
+      polygon(a);
+      ctx.stroke();
+    }
+
+    ctx.globalAlpha = 1;
+    raf = requestAnimationFrame(frame);
+  }
+
+  function start() {
+    if (raf) cancelAnimationFrame(raf);
+    build();
+    frame();
+  }
+
+  let resizeTimer = null;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(start, 200);
+  });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+    } else if (!raf) {
+      frame();
+    }
+  });
+
+  start();
 })();
