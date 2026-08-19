@@ -117,43 +117,86 @@
     counterObserver.observe(stat);
   });
 
-  // Contact form handling
-  if (contactForm && formStatus) {
-    contactForm.addEventListener('submit', function (event) {
-      event.preventDefault();
+   // Contact form handling
+if (contactForm && formStatus) {
+  contactForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
 
-      const formData = new FormData(contactForm);
-      const name = formData.get('name')?.toString().trim();
-      const email = formData.get('email')?.toString().trim();
-      const service = formData.get('service')?.toString();
-      const message = formData.get('message')?.toString().trim();
+    const formData = new FormData(contactForm);
+    const name = formData.get('name')?.toString().trim();
+    const email = formData.get('email')?.toString().trim();
+    const service = formData.get('service')?.toString();
+    const message = formData.get('message')?.toString().trim();
 
-      if (!name || !email || !service || !message) {
-        showStatus('Please fill out all fields.', 'error');
-        return;
+    if (!name || !email || !service || !message) {
+      showStatus('Please fill out all fields.', 'error');
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      showStatus('Please enter a valid email address.', 'error');
+      return;
+    }
+
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending...';
+    }
+
+    showStatus('Sending your message...', 'success');
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showStatus(
+          'Message sent successfully! We’ll get back to you soon.',
+          'success'
+        );
+
+        contactForm.reset();
+      } else {
+        showStatus(
+          'Something went wrong. Please try again.',
+          'error'
+        );
       }
-
-      if (!isValidEmail(email)) {
-        showStatus('Please enter a valid email address.', 'error');
-        return;
-      }
-
-      // Build mailto link so the user can send from their own email client
-      const subject = encodeURIComponent('New Project Inquiry from ' + name);
-      const body = encodeURIComponent(
-        'Name: ' + name + '\n' +
-        'Email: ' + email + '\n' +
-        'Service: ' + service + '\n\n' +
-        'Project Details:\n' + message
+    } catch (error) {
+      showStatus(
+        'Unable to send your message. Please try again.',
+        'error'
       );
-      const mailtoLink = 'mailto:hello@idensolution.com?subject=' + subject + '&body=' + body;
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Send Message';
+      }
+    }
+  });
+}
 
-      window.location.href = mailtoLink;
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
-      showStatus('Opening your email app with the project details...', 'success');
-      contactForm.reset();
-    });
-  }
+function showStatus(message, type) {
+  if (!formStatus) return;
+
+  formStatus.textContent = message;
+  formStatus.className = 'form-status ' + type;
+
+  setTimeout(function () {
+    formStatus.textContent = '';
+    formStatus.className = 'form-status';
+  }, 5000);
+}
 
   function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -316,4 +359,82 @@
   });
 
   start();
+})();
+/* =========================================================
+   Lightweight Anti-Copy / Anti-Inspection
+   ========================================================= */
+(function () {
+  'use strict';
+
+  // Disable right-click context menu
+  document.addEventListener('contextmenu', function (event) {
+    event.preventDefault();
+  });
+
+  // Block common browser inspection / source shortcuts
+  document.addEventListener('keydown', function (event) {
+    const key = event.key.toLowerCase();
+
+    // F12
+    if (event.key === 'F12') {
+      event.preventDefault();
+      return;
+    }
+
+    // Ctrl / Cmd + Shift + I — Developer Tools
+    if (
+      (event.ctrlKey || event.metaKey) &&
+      event.shiftKey &&
+      key === 'i'
+    ) {
+      event.preventDefault();
+      return;
+    }
+
+    // Ctrl / Cmd + Shift + J — Console
+    if (
+      (event.ctrlKey || event.metaKey) &&
+      event.shiftKey &&
+      key === 'j'
+    ) {
+      event.preventDefault();
+      return;
+    }
+
+    // Ctrl / Cmd + Shift + C — Inspect Element
+    if (
+      (event.ctrlKey || event.metaKey) &&
+      event.shiftKey &&
+      key === 'c'
+    ) {
+      event.preventDefault();
+      return;
+    }
+
+    // Ctrl / Cmd + U — View Source
+    if (
+      (event.ctrlKey || event.metaKey) &&
+      key === 'u'
+    ) {
+      event.preventDefault();
+      return;
+    }
+
+    // Ctrl / Cmd + S — Save Page
+    if (
+      (event.ctrlKey || event.metaKey) &&
+      key === 's'
+    ) {
+      event.preventDefault();
+      return;
+    }
+  });
+
+  // Prevent dragging images and other media
+  document.addEventListener('dragstart', function (event) {
+    if (event.target.matches('img, svg, canvas')) {
+      event.preventDefault();
+    }
+  });
+
 })();

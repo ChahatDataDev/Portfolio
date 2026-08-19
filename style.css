@@ -4,14 +4,16 @@
    ========================================================= */
 
 :root {
-  --bg: #0a0a14;
-  --bg-elevated: #12121f;
-  --bg-card: rgba(18, 18, 31, 0.7);
-  --bg-card-hover: rgba(26, 26, 46, 0.85);
-  --text: #f8fafc;
-  --text-muted: #94a3b8;
-  --border: rgba(255, 255, 255, 0.1);
-  --border-strong: rgba(255, 255, 255, 0.18);
+  --bg: #f8fafc;
+  --bg-elevated: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.82);
+  --bg-card-hover: rgba(255, 255, 255, 0.98);
+
+  --text: #111827;
+  --text-muted: #64748b;
+
+  --border: rgba(15, 23, 42, 0.09);
+  --border-strong: rgba(15, 23, 42, 0.16);
 
   --purple: #7c3aed;
   --purple-light: #a855f7;
@@ -23,20 +25,38 @@
   --coral: #f97316;
   --mint: #10b981;
 
-  --gradient-primary: linear-gradient(135deg, var(--purple) 0%, var(--pink) 50%, var(--amber) 100%);
-  --gradient-secondary: linear-gradient(135deg, var(--teal) 0%, var(--blue) 100%);
-  --gradient-text: linear-gradient(90deg, var(--purple-light), var(--pink), var(--amber), var(--purple-light));
+  --gradient-primary: linear-gradient(
+    135deg,
+    var(--purple) 0%,
+    var(--pink) 50%,
+    var(--amber) 100%
+  );
+
+  --gradient-secondary: linear-gradient(
+    135deg,
+    var(--teal) 0%,
+    var(--blue) 100%
+  );
+
+  --gradient-text: linear-gradient(
+    90deg,
+    var(--purple),
+    var(--pink),
+    var(--amber),
+    var(--purple)
+  );
 
   --font-heading: 'Space Grotesk', sans-serif;
   --font-body: 'DM Sans', sans-serif;
+
   --radius: 18px;
   --radius-sm: 12px;
 
   --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  --shadow: 0 20px 60px -20px rgba(124, 58, 237, 0.25);
-  --shadow-lg: 0 30px 80px -20px rgba(236, 72, 153, 0.2);
-}
 
+  --shadow: 0 20px 60px -20px rgba(124, 58, 237, 0.16);
+  --shadow-lg: 0 30px 80px -20px rgba(236, 72, 153, 0.14);
+}
 * {
   margin: 0;
   padding: 0;
@@ -76,8 +96,7 @@ img {
 }
 
 .container {
-  width: 90%;
-  max-width: 1200px;
+  width: min(94%, 1600px);
   margin: 0 auto;
 }
 
@@ -102,9 +121,10 @@ img {
 
 .navbar.scrolled {
   padding: 12px 0;
-  background: rgba(10, 10, 20, 0.85);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
 }
 
 .nav-container {
@@ -993,7 +1013,7 @@ img {
     right: 0;
     flex-direction: column;
     gap: 0;
-    background: rgba(10, 10, 20, 0.98);
+    background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
     padding: 20px 0;
@@ -1179,16 +1199,6 @@ img {
   animation: spinY 4.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
-.geo-tri {
-  width: 120px;
-  height: 104px;
-  bottom: 14%;
-  right: 8%;
-  background: linear-gradient(135deg, var(--teal), var(--blue));
-  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-  animation: snapRotate 3.2s steps(1, end) infinite;
-}
-
 .geo-square {
   width: 90px;
   height: 90px;
@@ -1294,7 +1304,7 @@ img {
    ========================================================= */
 
 .section { padding: clamp(64px, 10vw, 120px) 0; }
-.container, .nav-container { width: min(92%, 1200px); }
+.container, .nav-container { width: min(94%, 1600px); }
 .section-title { text-wrap: balance; }
 
 @media (max-width: 1024px) {
@@ -1325,4 +1335,81 @@ img {
 
 @media (prefers-reduced-motion: reduce) {
   .geo-canvas { display: none; }
+}
+
+body {
+  background:
+    radial-gradient(circle at 85% 5%, rgba(168, 85, 247, 0.08), transparent 28%),
+    radial-gradient(circle at 10% 45%, rgba(20, 184, 166, 0.05), transparent 25%),
+    var(--bg);
+}
+
+.hero-glow {
+  background: radial-gradient(
+    circle,
+    rgba(124, 58, 237, 0.16) 0%,
+    rgba(236, 72, 153, 0.08) 40%,
+    transparent 70%
+  );
+}
+
+.services {
+  background: linear-gradient(
+    180deg,
+    #f8fafc 0%,
+    #ffffff 100%
+  );
+}
+
+.process {
+  background: #f1f5f9;
+}
+
+.contact {
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f8fafc 100%
+  );
+}
+
+.service-card,
+.process-step,
+.about-card,
+.contact-form,
+.floating-card {
+  box-shadow:
+    0 12px 40px rgba(15, 23, 42, 0.06);
+}
+
+.service-card:hover,
+.process-step:hover {
+  box-shadow:
+    0 20px 50px rgba(15, 23, 42, 0.10);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: rgba(15, 23, 42, 0.025);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  background: #ffffff;
+}
+
+.btn-secondary {
+  color: var(--text);
+  border-color: rgba(15, 23, 42, 0.16);
+}
+
+.btn-secondary:hover {
+  background: rgba(124, 58, 237, 0.05);
+  border-color: var(--purple-light);
+}
+
+.footer {
+  background: #f8fafc;
 }
